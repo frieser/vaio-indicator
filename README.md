@@ -4,7 +4,7 @@ You know, last generation of Sony Vaio Pro are noisy. This is the preview versio
 
 ![Screehot of vaio indicator](https://raw.githubusercontent.com/frieser/vaio-indicator/master/data/screenhot.png)
 
-At the moment, its *only tested in the sony vaio pro 13* under ubuntu/elementary os. *WIP*
+At the moment, its **only tested in the sony vaio pro 13** under ubuntu/elementary os. **WIP**
 
 Install requirements:
 python-distutils-extra
