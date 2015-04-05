@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Categories=GNOME;Utility;
+Name=Vaio Indicator
+Comment=Vaio Indicator System Monitor Indicator
+Exec=vaio-indicator
+Icon=vaio-indicator
+
