@@ -1,5 +1,5 @@
 #
-#    Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
+# Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,55 +23,54 @@ from gettext import gettext as _
 
 
 class VaioIndicator:
-  profilesOptions = []
-  udevPath = "/sys/devices/platform/sony-laptop"
-  indicatorName = "vaio-indicator"
-  indicatorIcon = "system"
-  indicatorCategory = appindicator.IndicatorCategory.HARDWARE
+    profilesOptions = []
+    udevPath = "/sys/devices/platform/sony-laptop"
+    indicatorName = "vaio-indicator"
+    indicatorIcon = "system"
+    indicatorCategory = appindicator.IndicatorCategory.HARDWARE
 
-  def __init__(self):
-    self.indicator = appindicator.Indicator.new (
-                          self.indicatorName,
-                          self.indicatorIcon,
-                          self.indicatorCategory)
+    def __init__(self):
+        self.indicator = appindicator.Indicator.new(
+            self.indicatorName,
+            self.indicatorIcon,
+            self.indicatorCategory)
 
-    self.indicator.set_status (appindicator.IndicatorStatus.ACTIVE)
+        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
 
-    self.retrive_device_information()
-    self.build_menu()
+        self.retrive_device_information()
+        self.build_menu()
 
-  def build_menu(self):
-    menu = gtk.Menu()
-    
-    for option in self.profilesOptions:
-      item = gtk.MenuItem(_(option.capitalize()))
-      menu.append(item)
-      item.connect("activate", self.set_thermal_control_profile, option)
-      item.show()
+    def build_menu(self):
+        menu = gtk.Menu()
 
-    quit_separator = gtk.SeparatorMenuItem()
-    menu.append(quit_separator)
-    quit_separator.show()
+        for option in self.profilesOptions:
+            item = gtk.MenuItem(_(option.capitalize()))
+            menu.append(item)
+            item.connect("activate", self.set_thermal_control_profile, option)
+            item.show()
 
-    quit = gtk.MenuItem(_('Quit'))
-    quit.connect('activate', self.quit)
-    quit.show()
-    menu.append(quit)
+        quit_separator = gtk.SeparatorMenuItem()
+        menu.append(quit_separator)
+        quit_separator.show()
 
-    self.indicator.set_menu(menu)
+        quit_menu_item = gtk.MenuItem(_('Quit'))
+        quit_menu_item.connect('activate', self.quit)
+        quit_menu_item.show()
+        menu.append(quit_menu_item)
 
-  def set_thermal_control_profile(self, w, profile):
-    os.system('echo '+profile+' | pkexec tee '+self.udevPath+'/thermal_control')    
+        self.indicator.set_menu(menu)
 
-  def retrive_device_information(self):
-    context = pyudev.Context()
-    devices = context.list_devices().match_subsystem('platform').match_property('DRIVER', 'sony-laptop')
+    def set_thermal_control_profile(self, w, profile):
+        os.system('echo ' + profile + ' | pkexec tee ' + self.udevPath + '/thermal_control')
 
-    for device in devices:
-      self.udevPath = device.sys_path
-      attributes = device.attributes
-      self.profilesOptions.extend(attributes.asstring('thermal_profiles').split())
+    def retrive_device_information(self):
+        context = pyudev.Context()
+        devices = context.list_devices().match_subsystem('platform').match_property('DRIVER', 'sony-laptop')
 
-  def quit(self, widget):
-    gtk.main_quit()
-  
+        for device in devices:
+            self.udevPath = device.sys_path
+            attributes = device.attributes
+            self.profilesOptions.extend(attributes.asstring('thermal_profiles').split())
+
+    def quit(self, widget):
+        gtk.main_quit()

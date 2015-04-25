@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-#    Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
+# Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
@@ -23,9 +23,9 @@ ROOT_DIRECTORY = os.path.abspath(
     os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
 )
 
-if (os.path.exists(os.path.join(ROOT_DIRECTORY, 'vaio_indicator'))
-		and ROOT_DIRECTORY not in sys.path):
-	sys.path.insert(0, ROOT_DIRECTORY)
+if os.path.exists(os.path.join(ROOT_DIRECTORY, 'vaio_indicator')) and ROOT_DIRECTORY not in sys.path:
+    sys.path.insert(0, ROOT_DIRECTORY)
 
 import vaio_indicator
+
 vaio_indicator.main()

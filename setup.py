@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
+# Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,25 +21,27 @@ import sys
 import shutil
 import DistUtilsExtra.auto
 
-NAME='vaio-indicator'
+NAME = 'vaio-indicator'
+
 
 class Install(DistUtilsExtra.auto.install_auto):
-	def run(self):
-		shutil.copy(os.path.join('data', NAME+'.desktop.in'), NAME+'.desktop')
-		DistUtilsExtra.auto.install_auto.run(self)
-		os.remove(NAME+'.desktop')
+    def run(self):
+        shutil.copy(os.path.join('data', NAME + '.desktop.in'), NAME + '.desktop')
+        DistUtilsExtra.auto.install_auto.run(self)
+        os.remove(NAME + '.desktop')
+
 
 DistUtilsExtra.auto.setup(
-	name=NAME,
-	version='0.1',
-	license='GPL-3',
-	author='Hector Molano',
-	author_email='fiti.pol@gmail.com',
-	description='Sony Vaio Indicator',
-	long_description='Sony Vaio Indicator',
-	url='https://github.com/frieser/vaio-indicator',
-	data_files=[
-		('/etc/xdg/autostart', [NAME+'.desktop',]),
-	],
-	cmdclass={'install': Install},
+    name=NAME,
+    version='0.1',
+    license='GPL-3',
+    author='Hector Molano',
+    author_email='fiti.pol@gmail.com',
+    description='Sony Vaio Indicator',
+    long_description='Sony Vaio Indicator',
+    url='https://github.com/frieser/vaio-indicator',
+    data_files=[
+        ('/etc/xdg/autostart', [NAME + '.desktop', ]),
+    ],
+    cmdclass={'install': Install},
 )

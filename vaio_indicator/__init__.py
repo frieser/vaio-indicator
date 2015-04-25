@@ -1,5 +1,5 @@
 #
-#    Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
+# Copyright (C) 2015  Hector Molano <fiti.pol@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -24,17 +24,18 @@ COPYRIGHT = 'Copyright (C) 2015 Hector Molano'
 WEBSITE = 'https://github.com/frieser/vaio-indicator'
 
 AUTHORS = [
-	'Hector Molano <fiti.pol@gmail.com>'
+    'Hector Molano <fiti.pol@gmail.com>'
 ]
-
 
 from gi.repository import Gtk as gtk
 from vaio_indicator.indicator import *
 
-def main():
-	# Workaround to python gtk bug (#622084) causing Ctrl+C not to work
-	import signal
-	signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-	vaio_indicator = VaioIndicator()
-	gtk.main()
+def main():
+    # Workaround to python gtk bug (#622084) causing Ctrl+C not to work
+    import signal
+
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+    vaio_indicator = VaioIndicator()
+    gtk.main()
