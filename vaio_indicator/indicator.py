@@ -20,33 +20,38 @@ import pyudev
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 from gettext import gettext as _
+from vaio_indicator.vaio import Vaio
 
 
 class VaioIndicator:
-    profilesOptions = []
-    udevPath = "/sys/devices/platform/sony-laptop"
     indicatorName = "vaio-indicator"
     indicatorIcon = "system"
     indicatorCategory = appindicator.IndicatorCategory.HARDWARE
 
     def __init__(self):
+        self.device = Vaio()
+
         self.indicator = appindicator.Indicator.new(
             self.indicatorName,
             self.indicatorIcon,
-            self.indicatorCategory)
+            self.indicatorCategory
+        )
 
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-
-        self.retrive_device_information()
         self.build_menu()
 
     def build_menu(self):
         menu = gtk.Menu()
+        group = []
 
-        for option in self.profilesOptions:
-            item = gtk.MenuItem(_(option.capitalize()))
+        for option in self.device.get_thermal_profiles():
+            item = gtk.RadioMenuItem.new_with_label(group, _(option.capitalize()))
+            group = item.get_group()
+            if self.device.get_current_thermal_profile() == option:
+                print(option)
+                item.set_active(True)
+            item.connect("toggled", self.set_menu_option, option)
             menu.append(item)
-            item.connect("activate", self.set_thermal_control_profile, option)
             item.show()
 
         quit_separator = gtk.SeparatorMenuItem()
@@ -60,17 +65,9 @@ class VaioIndicator:
 
         self.indicator.set_menu(menu)
 
-    def set_thermal_control_profile(self, w, profile):
-        os.system('echo ' + profile + ' | pkexec tee ' + self.udevPath + '/thermal_control')
-
-    def retrive_device_information(self):
-        context = pyudev.Context()
-        devices = context.list_devices().match_subsystem('platform').match_property('DRIVER', 'sony-laptop')
-
-        for device in devices:
-            self.udevPath = device.sys_path
-            attributes = device.attributes
-            self.profilesOptions.extend(attributes.asstring('thermal_profiles').split())
+    def set_menu_option(self, widget, option):
+        if widget.get_active():
+            self.device.set_thermal_control_profile(option)
 
     def quit(self, widget):
         gtk.main_quit()
